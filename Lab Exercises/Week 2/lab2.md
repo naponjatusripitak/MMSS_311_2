@@ -1,7 +1,7 @@
 Lab Section 2: A Crash Course in R
 ==================================
 
-1.  [A Brief Review](#A%20Brief%20Review) 1.1 [Data Types](##%20Data%20Types)
+1.  [A Brief Review](#a-brief-review) ..\*[Data Types](##data-types)
 2.  [Exercise](#Exercise)
 
 A Brief Review
@@ -290,7 +290,7 @@ names = c("John", "Jane", "Sam", "Sarah", "Blake", "Tim", "Jordan", "Lisa", "Ali
 sample(x = names, size = 2, replace = FALSE) # without replacement
 ```
 
-    ## [1] "Lisa" "Tim"
+    ## [1] "Sam"  "John"
 
 To ensure that your result is reproducible, use the set.seed() function.
 
