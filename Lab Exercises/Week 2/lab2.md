@@ -154,7 +154,7 @@ Often, you'll want to repeat certain tasks or instructions. Suppose you are aske
 
 In R, you have three main options.
 
-1.  For Loops
+### For Loops
 
 ``` r
 vector = NULL # Initialize an empty vector for storing your data
@@ -166,7 +166,7 @@ vector
 
     ##  [1]   1   4   9  16  25  36  49  64  81 100
 
-1.  Apply()
+### Apply()
 
 ``` r
 vector <- sapply(1:10, function(x) x^2)
@@ -175,7 +175,9 @@ vector
 
     ##  [1]   1   4   9  16  25  36  49  64  81 100
 
-1.  Vectorization According to Datacamp, &gt;vectorization is the operation of converting repeated operations on simply numbers ("scalars") into single operations on vectors or matrices.
+### Vectorization
+
+According to Datacamp, &gt;vectorization is the operation of converting repeated operations on simply numbers ("scalars") into single operations on vectors or matrices.
 
 My translation: this means it tends to be faster than loops or apply(), all else equal.
 
@@ -282,7 +284,7 @@ names = c("John", "Jane", "Sam", "Sarah", "Blake", "Tim", "Jordan", "Lisa", "Ali
 sample(x = names, size = 2, replace = FALSE) # without replacement
 ```
 
-    ## [1] "Jane" "Tim"
+    ## [1] "Jordan" "Emily"
 
 To ensure that your result is reproducible, use the set.seed() function.
 
@@ -295,7 +297,7 @@ set.seed(125); sample(x = names, size = 2, replace = FALSE)
 Generating Distribution Samples
 -------------------------------
 
-1.  Normal Distribution
+### Normal Distribution
 
 ``` r
 norm <- rnorm(10000, 3, 0.5) # rnorm(sample size = 10000, mean = 3, sd = 0.5)
@@ -310,25 +312,25 @@ sd(norm)
 
     ## [1] 0.5017744
 
-1.  Bernoulli Distribution
+### Bernoulli Distribution
 
 ``` r
 bern <- rbinom(100, 1, 0.5) # 100 iterations of a single coin toss
 ```
 
-1.  Binomial Distribution
+### Binomial Distribution
 
 ``` r
 binom <- rbinom(100, 3, 0.5) # 100 iterations of three coin tosses, counting the number of heads (or tails)
 ```
 
-1.  Discrete Uniform Distribution
+### Discrete Uniform Distribution
 
 ``` r
 dunif <- sample(1:10,10,replace=TRUE) 
 ```
 
-1.  Continuous Uniform Distribution
+### Continuous Uniform Distribution
 
 ``` r
 cunif <- runif(10, min = 1, max = 10)
@@ -337,7 +339,7 @@ cunif <- runif(10, min = 1, max = 10)
 Data Manipulation
 -----------------
 
-1.  Describing the data
+### Describing the data
 
 ``` r
 data(mtcars) # mtcars is a built-in dataset in R
@@ -410,7 +412,7 @@ dim(mtcars) # dimensions (observation & variables)
 
     ## [1] 32 11
 
-1.  Selecting specific rows and/or columns of a dataframe
+### Selecting specific rows and/or columns of a dataframe
 
 ``` r
 mtcars["mpg"]
@@ -517,7 +519,7 @@ mtcars$mpg # selecting a variable
     ## [15] 10.4 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4
     ## [29] 15.8 19.7 15.0 21.4
 
-1.  Filtering for observations where the conditions are true
+### Filtering for observations where the conditions are true
 
 ``` r
 mtcars[mtcars$mpg < 20, ] # filtering for cars with mpg less than 20, retaining all columns
@@ -563,7 +565,7 @@ mtcars[mtcars$mpg < 20 & mtcars$cyl == 8, ] # filtering for cars with mpg less t
     ## Ford Pantera L      15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
     ## Maserati Bora       15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
 
-1.  Appending and dropping observations
+### Appending and dropping observations
 
 ``` r
 newrow <- mtcars[1, ] # creating a new row
@@ -605,7 +607,7 @@ mtcars2[-33, ] # removing the row we just created by referencing the row number
     ## Maserati Bora       15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
     ## Volvo 142E          21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
 
-1.  Selecting variables
+### Selecting variables
 
 ``` r
 target <- c("mpg", "hp")
@@ -646,7 +648,7 @@ mtcars[target]
     ## Maserati Bora       15.0 335
     ## Volvo 142E          21.4 109
 
-1.  Excluding variables
+### Excluding variables
 
 ``` r
 target <- names(mtcars) %in% c("mpg", "hp")
