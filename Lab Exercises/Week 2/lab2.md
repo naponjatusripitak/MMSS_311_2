@@ -1,12 +1,26 @@
-Lab Section 2: Crash Course in R
-================================
+Lab Section 2: A Crash Course in R
+==================================
 
 Data Types
 ----------
 
-Generally, you will be dealing with four main types of data including numeric, character, integer and logical.
+Generally, you will be dealing with four main types of data objects (atomic vectors) including numeric, character, integer and logical.
+
+``` r
+numeric <- 1
+character <- "a"
+integer <- 1L
+logical <- TRUE # or FALSE
+```
 
 Use `c()` with commas to add multiple elements to a vector
+
+``` r
+vector_numeric <- c(1, 2, 3, 4)
+vector_character <- c("a", "b", "c", "d")
+vector_integer <- c(1L, 2L, 3L, 4L)
+vector_logical <- c(TRUE, FALSE, TRUE, FALSE)
+```
 
 To select specific element(s) in a vector, use brackets.
 
@@ -52,3 +66,11 @@ Data Structures
 ---------------
 
 You will also encounter different data sturctures such as matrix, list, dataframes and factors.
+
+``` r
+matrix <- matrix(data = 1, nrow = 2, ncol = 2)
+list <- list(1, 2, 3, 4)
+dataframe <- data.frame(first = c("John", "Sarah", "Kate"), last = c("Legend", "Sanders", "Middleton"), age = c(40, 36, 37))
+factor <- factor(c("low", "mid", "high", "mid", "low", "low", "high"))
+# To coerce to different data structures, use as.matrix, as.list, as.data.frame, as.factor
+```
