@@ -1,21 +1,16 @@
-Data types & data structures
-----------------------------
+Lab Section 2: Crash Course in R
+================================
 
-1.  Data Types
+Data Types
+----------
+
+Generally, you will be dealing with four main types of data including numeric, character, integer and logical.
+
+Use `c()` with commas to add multiple elements to a vector
+
+To select specific element(s) in a vector, use brackets.
 
 ``` r
-numeric <- 1
-character <- "a"
-integer <- 1L
-logical <- TRUE # or FALSE
-
-# Use c() with commas to add multiple elements to a vector
-vector_numeric <- c(1, 2, 3, 4)
-vector_character <- c("a", "b", "c", "d")
-vector_integer <- c(1L, 2L, 3L, 4L)
-vector_logical <- c(TRUE, FALSE, TRUE, FALSE)
-
-# Selecting specific element(s) in a vector
 vector_logical[1]
 ```
 
@@ -27,8 +22,9 @@ vector_character[1:3]
 
     ## [1] "a" "b" "c"
 
+The functions `typeof()`, `length()`, `class()` and `str()` provide useful information about your vectors and R objects in general.
+
 ``` r
-# The functions typeof(), length(), class() and str() provide useful information about your vectors and R objects in general.
 typeof(logical)
 ```
 
@@ -51,3 +47,8 @@ str(vector_numeric)
 ```
 
     ##  num [1:4] 1 2 3 4
+
+Data Structures
+---------------
+
+You will also encounter different data sturctures such as matrix, list, dataframes and factors.
