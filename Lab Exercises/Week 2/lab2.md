@@ -1,25 +1,40 @@
 -   [Lab Section 2: A Crash Course in R](#lab-section-2-a-crash-course-in-r)
-    -   [A Brief Review](#a-brief-review)
-        -   [Data Types](#data-types)
-        -   [Data Structures](#data-structures)
-        -   [Generating Sequences](#generating-sequences)
-        -   [Creating a Function](#creating-a-function)
-        -   [Using a For Loop vs Apply() vs Vectorization](#using-a-for-loop-vs-apply-vs-vectorization)
-        -   [Logical Operators](#logical-operators)
-        -   [If Statements](#if-statements)
-        -   [Sampling from a Given Data](#sampling-from-a-given-data)
-        -   [Generating Distribution Samples](#generating-distribution-samples)
-        -   [Data Manipulation](#data-manipulation)
-        -   [Dplyr](#dplyr)
-    -   [Excercise](#excercise)
+-   [A Brief Review](#a-brief-review)
+    -   [Data Types](#data-types)
+    -   [Data Structures](#data-structures)
+    -   [Generating Sequences](#generating-sequences)
+    -   [Creating a Function](#creating-a-function)
+    -   [Using a For Loop vs Apply() vs Vectorization](#using-a-for-loop-vs-apply-vs-vectorization)
+        -   [For Loops](#for-loops)
+        -   [Apply()](#apply)
+        -   [Vectorization](#vectorization)
+    -   [Logical Operators](#logical-operators)
+    -   [If Statements](#if-statements)
+    -   [Sampling from a Given Data](#sampling-from-a-given-data)
+    -   [Generating Distribution Samples](#generating-distribution-samples)
+        -   [Normal Distribution](#normal-distribution)
+        -   [Bernoulli Distribution](#bernoulli-distribution)
+        -   [Binomial Distribution](#binomial-distribution)
+        -   [Discrete Uniform Distribution](#discrete-uniform-distribution)
+        -   [Continuous Uniform Distribution](#continuous-uniform-distribution)
+    -   [Data Manipulation](#data-manipulation)
+        -   [Describing the data](#describing-the-data)
+        -   [Selecting specific rows and/or columns of a dataframe](#selecting-specific-rows-andor-columns-of-a-dataframe)
+        -   [Filtering for observations where the conditions are true](#filtering-for-observations-where-the-conditions-are-true)
+        -   [Appending and dropping observations](#appending-and-dropping-observations)
+        -   [Selecting variables](#selecting-variables)
+        -   [Excluding variables](#excluding-variables)
+    -   [Dplyr](#dplyr)
+-   [Excercise](#excercise)
 
 Lab Section 2: A Crash Course in R
 ==================================
 
 A Brief Review
---------------
+==============
 
-### Data Types
+Data Types
+----------
 
 Generally, you will be dealing with four main types of data objects (atomic vectors) including numeric, character, integer and logical.
 
@@ -79,7 +94,8 @@ str(vector_numeric)
 
     ##  num [1:4] 1 2 3 4
 
-### Data Structures
+Data Structures
+---------------
 
 You will also encounter different data sturctures such as matrix, list, dataframes and factors.
 
@@ -91,7 +107,8 @@ factor <- factor(c("low", "mid", "high", "mid", "low", "low", "high"))
 # To coerce to different data structures, use as.matrix, as.list, as.data.frame, as.factor
 ```
 
-### Generating Sequences
+Generating Sequences
+--------------------
 
 ``` r
 ones <- rep(1, 10)
@@ -123,7 +140,8 @@ one_to_ten_m
     ## [1,]    1    2    3    4    5
     ## [2,]    6    7    8    9   10
 
-### Creating a Function
+Creating a Function
+-------------------
 
 Suppose we want a function that adds 1 to its argument:
 
@@ -161,13 +179,14 @@ plusone(c(2, 5, 9))
 
     ## [1]  3  6 10
 
-### Using a For Loop vs Apply() vs Vectorization
+Using a For Loop vs Apply() vs Vectorization
+--------------------------------------------
 
 Often, you'll want to repeat certain tasks or instructions. Suppose you are asked to square every value from 1 to 10.
 
 In R, you have three main options.
 
-#### For Loops
+### For Loops
 
 ``` r
 vector = NULL # Initialize an empty vector for storing your data
@@ -179,7 +198,7 @@ vector
 
     ##  [1]   1   4   9  16  25  36  49  64  81 100
 
-#### Apply()
+### Apply()
 
 ``` r
 vector <- sapply(1:10, function(x) x^2)
@@ -188,7 +207,7 @@ vector
 
     ##  [1]   1   4   9  16  25  36  49  64  81 100
 
-#### Vectorization
+### Vectorization
 
 According to Datacamp, &gt;vectorization is the operation of converting repeated operations on simply numbers ("scalars") into single operations on vectors or matrices.
 
@@ -202,7 +221,8 @@ vector
 
     ##  [1]   1   4   9  16  25  36  49  64  81 100
 
-### Logical Operators
+Logical Operators
+-----------------
 
 ``` r
 3 == 3
@@ -246,7 +266,8 @@ vector
 
     ## [1] TRUE
 
-### If Statements
+If Statements
+-------------
 
 For a simple illustration, suppose we want to compare two numbers.
 
@@ -287,14 +308,15 @@ if(a > b){
 
     ## [1] "Greater"
 
-### Sampling from a Given Data
+Sampling from a Given Data
+--------------------------
 
 ``` r
 names = c("John", "Jane", "Sam", "Sarah", "Blake", "Tim", "Jordan", "Lisa", "Alicia", "Emily")
 sample(x = names, size = 2, replace = FALSE) # without replacement
 ```
 
-    ## [1] "Sarah"  "Alicia"
+    ## [1] "Sarah" "John"
 
 To ensure that your result is reproducible, use the set.seed() function.
 
@@ -304,9 +326,10 @@ set.seed(125); sample(x = names, size = 2, replace = FALSE)
 
     ## [1] "Alicia" "Jane"
 
-### Generating Distribution Samples
+Generating Distribution Samples
+-------------------------------
 
-#### Normal Distribution
+### Normal Distribution
 
 ``` r
 norm <- rnorm(10000, 3, 0.5) # rnorm(sample size = 10000, mean = 3, sd = 0.5)
@@ -321,33 +344,34 @@ sd(norm)
 
     ## [1] 0.5017744
 
-#### Bernoulli Distribution
+### Bernoulli Distribution
 
 ``` r
 bern <- rbinom(100, 1, 0.5) # 100 iterations of a single coin toss
 ```
 
-#### Binomial Distribution
+### Binomial Distribution
 
 ``` r
 binom <- rbinom(100, 3, 0.5) # 100 iterations of three coin tosses, counting the number of heads (or tails)
 ```
 
-#### Discrete Uniform Distribution
+### Discrete Uniform Distribution
 
 ``` r
 dunif <- sample(1:10,10,replace=TRUE) 
 ```
 
-#### Continuous Uniform Distribution
+### Continuous Uniform Distribution
 
 ``` r
 cunif <- runif(10, min = 1, max = 10)
 ```
 
-### Data Manipulation
+Data Manipulation
+-----------------
 
-#### Describing the data
+### Describing the data
 
 ``` r
 data(mtcars) # mtcars is a built-in dataset in R
@@ -420,7 +444,7 @@ dim(mtcars) # dimensions (observation & variables)
 
     ## [1] 32 11
 
-#### Selecting specific rows and/or columns of a dataframe
+### Selecting specific rows and/or columns of a dataframe
 
 ``` r
 mtcars["mpg"]
@@ -527,7 +551,7 @@ mtcars$mpg # selecting a variable
     ## [15] 10.4 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4
     ## [29] 15.8 19.7 15.0 21.4
 
-#### Filtering for observations where the conditions are true
+### Filtering for observations where the conditions are true
 
 ``` r
 mtcars[mtcars$mpg < 20, ] # filtering for cars with mpg less than 20, retaining all columns
@@ -573,7 +597,7 @@ mtcars[mtcars$mpg < 20 & mtcars$cyl == 8, ] # filtering for cars with mpg less t
     ## Ford Pantera L      15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
     ## Maserati Bora       15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
 
-#### Appending and dropping observations
+### Appending and dropping observations
 
 ``` r
 newrow <- mtcars[1, ] # creating a new row
@@ -615,7 +639,7 @@ mtcars2[-33, ] # removing the row we just created by referencing the row number
     ## Maserati Bora       15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
     ## Volvo 142E          21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
 
-#### Selecting variables
+### Selecting variables
 
 ``` r
 target <- c("mpg", "hp")
@@ -656,7 +680,7 @@ mtcars[target]
     ## Maserati Bora       15.0 335
     ## Volvo 142E          21.4 109
 
-#### Excluding variables
+### Excluding variables
 
 ``` r
 target <- names(mtcars) %in% c("mpg", "hp")
@@ -697,7 +721,8 @@ mtcars[!target]
     ## Maserati Bora         8 301.0 3.54 3.570 14.60  0  1    5    8
     ## Volvo 142E            4 121.0 4.11 2.780 18.60  1  1    4    2
 
-### Dplyr
+Dplyr
+-----
 
 ``` r
 library(dplyr)
@@ -849,4 +874,4 @@ mtcars2 <- bind_rows(mtcars, newrow)
 ```
 
 Excercise
----------
+=========
