@@ -1,32 +1,29 @@
-Lab Section 2: A Crash Course in R
-==================================
-
 -   [A Brief Review](#a-brief-review)
--   [Data Types](#data-types)
--   [Data Structures](#data-structures)
--   [Generating Sequences](#generating-sequences)
--   [Creating a Function](#creating-a-function)
--   [Using a For Loop vs Apply() vs Vectorization](#using-a-for-loop-vs-apply---vs-vectorization)
-    -   [For Loops](#for-loops)
-    -   [Apply()](#apply--)
-    -   [Vectorization](#vectorization)
--   [Logical Operators](#logical-operators)
--   [If Statements](#if-statements)
--   [Sampling from a Given Data](#sampling-from-a-given-data)
--   [Generating Distribution Samples](#generating-distribution-samples)
-    -   [Normal Distribution](#normal-distribution)
-    -   [Bernoulli Distribution](#bernoulli-distribution)
-    -   [Binomial Distribution](#binomial-distribution)
-    -   [Discrete Uniform Distribution](#discrete-uniform-distribution)
-    -   [Continuous Uniform Distribution](#continuous-uniform-distribution)
--   [Data Manipulation](#data-manipulation)
-    -   [Describing the data](#describing-the-data)
-    -   [Selecting specific rows and/or columns of a dataframe](#selecting-specific-rows-and-or-columns-of-a-dataframe)
-    -   [Filtering for observations where the conditions are true](#filtering-for-observations-where-the-conditions-are-true)
-    -   [Appending and dropping observations](#appending-and-dropping-observations)
-    -   [Selecting variables](#selecting-variables)
-    -   [Excluding variables](#excluding-variables)
--   [Dplyr](#dplyr)
+    -   [Data Types](#data-types)
+    -   [Data Structures](#data-structures)
+    -   [Generating Sequences](#generating-sequences)
+    -   [Creating a Function](#creating-a-function)
+    -   [Using a For Loop vs Apply() vs Vectorization](#using-a-for-loop-vs-apply-vs-vectorization)
+        -   [For Loops](#for-loops)
+        -   [Apply()](#apply)
+        -   [Vectorization](#vectorization)
+    -   [Logical Operators](#logical-operators)
+    -   [If Statements](#if-statements)
+    -   [Sampling from a Given Data](#sampling-from-a-given-data)
+    -   [Generating Distribution Samples](#generating-distribution-samples)
+        -   [Normal Distribution](#normal-distribution)
+        -   [Bernoulli Distribution](#bernoulli-distribution)
+        -   [Binomial Distribution](#binomial-distribution)
+        -   [Discrete Uniform Distribution](#discrete-uniform-distribution)
+        -   [Continuous Uniform Distribution](#continuous-uniform-distribution)
+    -   [Data Manipulation](#data-manipulation)
+        -   [Describing the data](#describing-the-data)
+        -   [Selecting specific rows and/or columns of a dataframe](#selecting-specific-rows-andor-columns-of-a-dataframe)
+        -   [Filtering for observations where the conditions are true](#filtering-for-observations-where-the-conditions-are-true)
+        -   [Appending and dropping observations](#appending-and-dropping-observations)
+        -   [Selecting variables](#selecting-variables)
+        -   [Excluding variables](#excluding-variables)
+    -   [Dplyr](#dplyr)
 -   [Excercise](#excercise)
 
 A Brief Review
@@ -315,7 +312,7 @@ names = c("John", "Jane", "Sam", "Sarah", "Blake", "Tim", "Jordan", "Lisa", "Ali
 sample(x = names, size = 2, replace = FALSE) # without replacement
 ```
 
-    ## [1] "Sarah"  "Jordan"
+    ## [1] "Sarah" "Tim"
 
 To ensure that your result is reproducible, use the set.seed() function.
 
