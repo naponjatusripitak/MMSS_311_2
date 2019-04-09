@@ -3,7 +3,11 @@ Installing and Loading Packages in R
 -   [The Typical Way](#the-typical-way)
 -   [Function for Checking, Installing and Loading Packages](#function-for-checking-installing-and-loading-packages)
 
-Here's a brief overview of how I perform the following tasks: 1. Check for packages whether they have been installed or not 2. Install them if they are not yet installed 3. Load the packages into R 4. Do this in batch
+Here's a brief overview of how I perform the following tasks:
+1. Check for packages whether they have been installed or not
+2. Install them if they are not yet installed
+3. Load the packages into R
+4. Do this in batch
 
 The Typical Way
 ---------------
