@@ -54,7 +54,9 @@ load.packages <- function(x) {
 }
 ```
 
-Here's a brief explanation of what's going on. The function `require()` is generally used to load a given package in a manner that is similar to `library()`. However, when we put an exclamation in front of it (`!require`), it not only tries to load the package but also returns `FALSE` if the package is installed and `TRUE` if the package is missing. Using this logical output, we can incorporate it into an if statement that loads a given package if it has been installed or installs the package and loads it if it has not been installed. - Lastly, we use `lapply()` to apply this function on each element in the vector "packages"
+Here's a brief explanation of what's going on. The function `require()` is generally used to load a given package in a manner that is similar to `library()`. However, when we put an exclamation in front of it (`!require`), it not only tries to load the package but also returns `FALSE` if the package is installed and `TRUE` if the package is missing. Using this logical output, we can incorporate it into an if statement that loads a given package if it has been installed or installs the package and loads it if it has not been installed.
+
+-   Lastly, we use `lapply()` to apply this function on each element in the vector "packages"
 
 ``` r
 lapply(packages, load.packages)
