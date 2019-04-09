@@ -1,8 +1,7 @@
--   [Installing and Loading Packages in R](#installing-and-loading-packages-in-r)
-    -   [The Typical Way](#the-typical-way)
-
 Installing and Loading Packages in R
 ====================================
+-   [The Typical Way](#the-typical-way)
+-   [Function for Checking, Installing and Loading Packages](#function-for-checking-installing-and-loading-packages)
 
 Here's a brief overview of how I perform the following tasks: 1. Check for packages whether they have been installed or not 2. Install them if they are not yet installed 3. Load the packages into R 4. Do this in batch
 
@@ -27,7 +26,12 @@ library(stringr)
 library(foreign)
 ```
 
-However, as you work with more and more packages, it could be increasingly difficult to keep track of what packages have been installed or loaded and whatnot. A simple solution is to write a function that checks, installs, and loads the packages all in one go. \#\# Function for Checking, Installing and Loading Packages - First, we assign a vector containing the names of the packages that you need for a given project to a variable called "packages"
+However, as you work with more and more packages, it could be increasingly difficult to keep track of what packages have been installed or loaded and whatnot. A simple solution is to write a function that checks, installs, and loads the packages all in one go.
+
+Function for Checking, Installing and Loading Packages
+------------------------------------------------------
+
+-   First, we assign a vector containing the names of the packages that you need for a given project to a variable called "packages"
 
 ``` r
 packages <- c("dplyr", "ggplot2", "lubridate", "stringr", "foreign")
