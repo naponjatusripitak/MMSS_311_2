@@ -1,5 +1,12 @@
 Lab Section 2: A Crash Course in R
 ==================================
+-   [Installing and Loading Packages in R](#installing-and-loading-packages-in-r)
+    -   [The Typical Way](#the-typical-way)
+    -   [Function for Checking, Installing and Loading Packages](#function-for-checking-installing-and-loading-packages)
+-   [R Markdown Tutorial](#r-markdown-tutorial)
+    -   [Metadata](#metadata)
+    -   [Code Chunks](#code-chunks)
+    -   [Text](#text)
 -   [A Brief Review](#a-brief-review)
     -   [Data Types](#data-types)
     -   [Data Structures](#data-structures)
@@ -12,7 +19,113 @@ Lab Section 2: A Crash Course in R
     -   [Generating Distribution Samples](#generating-distribution-samples)
     -   [Data Manipulation](#data-manipulation)
     -   [Dplyr](#dplyr)
+    -   [Linear Regression](#linear-regression)
 -   [Excercise](#excercise)
+
+Installing and Loading Packages in R
+====================================
+
+Here's a brief overview of how I perform the following tasks: 1. Check for packages whether they have been installed or not 2. Install them if they are not yet installed 3. Load the packages into R 4. Do this in multiple packages
+
+The Typical Way
+---------------
+
+The most common way to install and load packages is simply to do this.
+
+``` r
+# Install
+install.packages("dplyr")
+install.packages("ggplot2")
+install.packages("lubridate")
+install.packages("stringr")
+install.packages("foreign")
+
+# Load
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+library(stringr)
+library(foreign)
+```
+
+However, as you work with more and more packages, it could be increasingly difficult to keep track of what packages have been installed or loaded and whatnot. A simple solution is to write a function that checks, installs, and loads the packages all in one go.
+
+Function for Checking, Installing and Loading Packages
+------------------------------------------------------
+
+-   First, we assign a vector containing the names of the packages that you need for a given project to a variable called "packages"
+
+``` r
+packages <- c("dplyr", "ggplot2", "lubridate", "stringr", "foreign")
+```
+
+-   Second, we write a function that takes each element of "packages" as an argument and name this function `load.packages`
+
+``` r
+load.packages <- function(x) {
+  if (!require(x, character.only = TRUE)) {
+    # character.only = TRUE specifies that the argument being passed to the function is in character type
+    install.packages(x, dependencies = TRUE)
+    # setting dependencies to TRUE will also install other packages that are necessary
+    library(x, character.only = TRUE) # load the package once it has been installed
+  }
+}
+```
+
+Here's a brief explanation of what's going on. The function `require()` is generally used to load a given package in a manner that is similar to `library()`. However, when we put an exclamation in front of it (`!require`), it not only tries to load the package but also returns `FALSE` if the package is installed and `TRUE` if the package is missing. Using this logical output, we can incorporate it into an if statement that loads a given package if it has been installed or installs the package and loads it if it has not been installed. - Lastly, we use `lapply()` to apply this function on each element in the vector "packages"
+
+``` r
+lapply(packages, load.packages)
+```
+
+R Markdown Tutorial
+===================
+
+R Markdown (.Rmd) provides a notebook interface that combines text and code to generate highly readable output. R Markdown documents typically have three main components.
+
+Metadata
+--------
+
+The header section of the document is where you can include the metadata. Things like title, author, date and output ususally go here. Here's an example of what I used to generate this document.
+
+``` r
+---
+title: "Lab Section 2: A Crash Course in R"
+author: "Napon Jatusripitak"
+date: "4/8/2019"
+output:
+  md_document:
+    toc: true
+    toc_depth: 2
+    variant: markdown_github
+---
+```
+
+In terms of output, you have several options (html, pdf, word doc, etc.). I chose markdown which is readable on GitHub.
+
+Code Chunks
+-----------
+
+You can write your codes in chunks and run them separately. Note that when you knit the document, all your code chunks will be evaluated unless specified otherwise. Here's how to wrap your codes. Begin your chunk with three backticks (generally the same button as "~"") followed by "r" in braces and end your chunk with three backticks. For example,
+
+``` r
+!```{r}
+packages <- c("dplyr", "ggplot2", "lubridate", "stringr", "foreign")
+!```
+```
+
+You have many different options in dealing with your codes. At times, you might want to display your codes without running them. At other times, you might want to run your codes but without displaying the actual output. You will be making choices with regard to three issues: 1. Whether or not to evaluate your codes 2. Whether or not to display your codes 3. Whether or not to display your output
+
+Here's a few chunk options: - The default is to evaluate your codes and to display the codes as well as their output - `eval=FALSE` displays your codes without evaluating them - `echo=FALSE` does not display your codes but evaluates them and displays their output - `include=FALSE` evaluates your codes but does not display your codes or their output - `eval=FALSE, include=FALSE` does not evaluate or display your codes and their output - `results="hide"` evaluates your codes and displays them without displaying their output
+
+Can you think of what situations might call for the use of which commands?
+
+Text
+----
+
+Lastly, you have texts. Anything that's not wrapped in backticks will generally be displayed as texts. You can make them bold, italic, create a header, create a link, create a list, and more. You can also do footnotes and citations, which is pretty neat.
+
+Additional resources can be found here: [R Markdown Reference](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf) [R Markdown Cheat-sheet](https://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
 
 A Brief Review
 ==============
@@ -300,7 +413,7 @@ names = c("John", "Jane", "Sam", "Sarah", "Blake", "Tim", "Jordan", "Lisa", "Ali
 sample(x = names, size = 2, replace = FALSE) # without replacement
 ```
 
-    ## [1] "Sam" "Tim"
+    ## [1] "Jane"  "Emily"
 
 To ensure that your result is reproducible, use the set.seed() function.
 
@@ -586,6 +699,45 @@ mtcars[mtcars$mpg < 20 & mtcars$cyl == 8, ] # filtering for cars with mpg less t
 ``` r
 newrow <- mtcars[1, ] # creating a new row
 mtcars2 <- rbind(mtcars, newrow) # combined <- rbind(initial, additional)
+mtcars2
+```
+
+    ##                      mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+    ## Mazda RX4           21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+    ## Mazda RX4 Wag       21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+    ## Datsun 710          22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+    ## Hornet 4 Drive      21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+    ## Hornet Sportabout   18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+    ## Valiant             18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+    ## Duster 360          14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+    ## Merc 240D           24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+    ## Merc 230            22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+    ## Merc 280            19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+    ## Merc 280C           17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+    ## Merc 450SE          16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+    ## Merc 450SL          17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+    ## Merc 450SLC         15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+    ## Cadillac Fleetwood  10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+    ## Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+    ## Chrysler Imperial   14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+    ## Fiat 128            32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+    ## Honda Civic         30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+    ## Toyota Corolla      33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+    ## Toyota Corona       21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+    ## Dodge Challenger    15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+    ## AMC Javelin         15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+    ## Camaro Z28          13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+    ## Pontiac Firebird    19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+    ## Fiat X1-9           27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+    ## Porsche 914-2       26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+    ## Lotus Europa        30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+    ## Ford Pantera L      15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+    ## Ferrari Dino        19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+    ## Maserati Bora       15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+    ## Volvo 142E          21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
+    ## Mazda RX41          21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+
+``` r
 mtcars2[-33, ] # removing the row we just created by referencing the row number
 ```
 
@@ -855,7 +1007,147 @@ count(mtcars, cyl == 8)
 
 ``` r
 mtcars2 <- bind_rows(mtcars, newrow)
+mtcars2
 ```
+
+    ##     mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+    ## 1  21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+    ## 2  21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+    ## 3  22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+    ## 4  21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+    ## 5  18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+    ## 6  18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+    ## 7  14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+    ## 8  24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+    ## 9  22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+    ## 10 19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+    ## 11 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+    ## 12 16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+    ## 13 17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+    ## 14 15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+    ## 15 10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+    ## 16 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+    ## 17 14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+    ## 18 32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+    ## 19 30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+    ## 20 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+    ## 21 21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+    ## 22 15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+    ## 23 15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+    ## 24 13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+    ## 25 19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+    ## 26 27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+    ## 27 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+    ## 28 30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+    ## 29 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+    ## 30 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+    ## 31 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+    ## 32 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
+    ## 33 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+
+Linear Regression
+-----------------
+
+``` r
+data(cars) # Load the built-in data
+car_lm <- lm(dist ~ speed, data = cars) # lm(y ~ x, data = data)
+car_lm <- lm(dist ~., data = cars) # use a dot to denote all other variables
+summary(car_lm) # Print the regression report
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = dist ~ ., data = cars)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -29.069  -9.525  -2.272   9.215  43.201 
+    ## 
+    ## Coefficients:
+    ##             Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept) -17.5791     6.7584  -2.601   0.0123 *  
+    ## speed         3.9324     0.4155   9.464 1.49e-12 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 15.38 on 48 degrees of freedom
+    ## Multiple R-squared:  0.6511, Adjusted R-squared:  0.6438 
+    ## F-statistic: 89.57 on 1 and 48 DF,  p-value: 1.49e-12
+
+``` r
+coef(car_lm) # Get the coefficients - use brackets [] to access individual elements
+```
+
+    ## (Intercept)       speed 
+    ##  -17.579095    3.932409
+
+``` r
+fitted(car_lm) # Predicted values (Y-hat)
+```
+
+    ##         1         2         3         4         5         6         7 
+    ## -1.849460 -1.849460  9.947766  9.947766 13.880175 17.812584 21.744993 
+    ##         8         9        10        11        12        13        14 
+    ## 21.744993 21.744993 25.677401 25.677401 29.609810 29.609810 29.609810 
+    ##        15        16        17        18        19        20        21 
+    ## 29.609810 33.542219 33.542219 33.542219 33.542219 37.474628 37.474628 
+    ##        22        23        24        25        26        27        28 
+    ## 37.474628 37.474628 41.407036 41.407036 41.407036 45.339445 45.339445 
+    ##        29        30        31        32        33        34        35 
+    ## 49.271854 49.271854 49.271854 53.204263 53.204263 53.204263 53.204263 
+    ##        36        37        38        39        40        41        42 
+    ## 57.136672 57.136672 57.136672 61.069080 61.069080 61.069080 61.069080 
+    ##        43        44        45        46        47        48        49 
+    ## 61.069080 68.933898 72.866307 76.798715 76.798715 76.798715 76.798715 
+    ##        50 
+    ## 80.731124
+
+``` r
+residuals(car_lm) # Residuals (Y - Y-hat)
+```
+
+    ##          1          2          3          4          5          6 
+    ##   3.849460  11.849460  -5.947766  12.052234   2.119825  -7.812584 
+    ##          7          8          9         10         11         12 
+    ##  -3.744993   4.255007  12.255007  -8.677401   2.322599 -15.609810 
+    ##         13         14         15         16         17         18 
+    ##  -9.609810  -5.609810  -1.609810  -7.542219   0.457781   0.457781 
+    ##         19         20         21         22         23         24 
+    ##  12.457781 -11.474628  -1.474628  22.525372  42.525372 -21.407036 
+    ##         25         26         27         28         29         30 
+    ## -15.407036  12.592964 -13.339445  -5.339445 -17.271854  -9.271854 
+    ##         31         32         33         34         35         36 
+    ##   0.728146 -11.204263   2.795737  22.795737  30.795737 -21.136672 
+    ##         37         38         39         40         41         42 
+    ## -11.136672  10.863328 -29.069080 -13.069080  -9.069080  -5.069080 
+    ##         43         44         45         46         47         48 
+    ##   2.930920  -2.933898 -18.866307  -6.798715  15.201285  16.201285 
+    ##         49         50 
+    ##  43.201285   4.268876
 
 Excercise
 =========
+
+1.  Create a function that prints "Even" if the number is even, "Odd" if the number is odd, and "Not an integer" if not an integer.
+
+2.  Simulate rolling a fair, six-sided dice 20 times. Double the outcome if even, square the outcome if odd. Return the result as a vector.
+
+3.  Starwars
+
+-   Import `dplyr` and load the built-in dataset `starwars` into the RStudio environment
+
+-   Print the number of observations and variables in the dataset
+
+-   What is the average mass of the characters? (Hint: drop the NAs)
+
+-   What is the average mass for characters with blue eyes that are taller than 160 but shorter than 200?
+
+-   Create a new dataframe that contains only name, height, mass, gender and species
+
+-   Using the dataframe obtained from the previous step, make a scatterplot of mass against height
+
+-   Identify the outlier from the previous graph and drop that character from the dataset
+
+-   Estimate a linear regression of mass on height, using the dataset that you obtained from the previous step
+
+-   Using the regression model you obtained, estimate the mass if the height is 180
