@@ -25,7 +25,11 @@ Lab Section 2: A Crash Course in R
 Installing and Loading Packages in R
 ====================================
 
-Here's a brief overview of how I perform the following tasks: 1. Check for packages whether they have been installed or not 2. Install them if they are not yet installed 3. Load the packages into R 4. Do this in multiple packages
+Here's a brief overview of how I perform the following tasks:
+1. Check for packages whether they have been installed or not
+2. Install them if they are not yet installed
+3. Load the packages into R 
+4. Do this in multiple packages
 
 The Typical Way
 ---------------
@@ -109,14 +113,23 @@ Code Chunks
 You can write your codes in chunks and run them separately. Note that when you knit the document, all your code chunks will be evaluated unless specified otherwise. Here's how to wrap your codes. Begin your chunk with three backticks (generally the same button as "~"") followed by "r" in braces and end your chunk with three backticks. For example,
 
 ``` r
-!```{r}
+```{r}
 packages <- c("dplyr", "ggplot2", "lubridate", "stringr", "foreign")
-!```
+```
 ```
 
-You have many different options in dealing with your codes. At times, you might want to display your codes without running them. At other times, you might want to run your codes but without displaying the actual output. You will be making choices with regard to three issues: 1. Whether or not to evaluate your codes 2. Whether or not to display your codes 3. Whether or not to display your output
+You have many different options in dealing with your codes. At times, you might want to display your codes without running them. At other times, you might want to run your codes but without displaying the actual output. You will be making choices with regard to three issues:
+1. Whether or not to evaluate your codes
+2. Whether or not to display your codes
+3. Whether or not to display your output
 
-Here's a few chunk options: - The default is to evaluate your codes and to display the codes as well as their output - `eval=FALSE` displays your codes without evaluating them - `echo=FALSE` does not display your codes but evaluates them and displays their output - `include=FALSE` evaluates your codes but does not display your codes or their output - `eval=FALSE, include=FALSE` does not evaluate or display your codes and their output - `results="hide"` evaluates your codes and displays them without displaying their output
+Here's a few chunk options:
+- The default is to evaluate your codes and to display the codes as well as their output
+- `eval=FALSE` displays your codes without evaluating them
+- `echo=FALSE` does not display your codes but evaluates them and displays their output
+- `include=FALSE` evaluates your codes but does not display your codes or their output
+- `eval=FALSE, include=FALSE` does not evaluate or display your codes and their output
+- `results="hide"` evaluates your codes and displays them without displaying their output
 
 Can you think of what situations might call for the use of which commands?
 
@@ -125,7 +138,9 @@ Text
 
 Lastly, you have texts. Anything that's not wrapped in backticks will generally be displayed as texts. You can make them bold, italic, create a header, create a link, create a list, and more. You can also do footnotes and citations, which is pretty neat.
 
-Additional resources can be found here: [R Markdown Reference](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf) [R Markdown Cheat-sheet](https://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
+Additional resources can be found here:
+- [R Markdown Reference](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf)
+- [R Markdown Cheat-sheet](https://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
 
 A Brief Review
 ==============
@@ -306,7 +321,8 @@ vector
 
 ### Vectorization
 
-According to Datacamp, &gt;vectorization is the operation of converting repeated operations on simply numbers ("scalars") into single operations on vectors or matrices.
+According to Datacamp,
+> vectorization is the operation of converting repeated operations on simply numbers ("scalars") into single operations on vectors or matrices. [Link](https://www.datacamp.com/community/tutorials/tutorial-on-loops-in-r)
 
 My translation: this means it tends to be faster than loops or apply(), all else equal.
 
@@ -1140,7 +1156,7 @@ Excercise
 
 -   What is the average mass of the characters? (Hint: drop the NAs)
 
--   What is the average mass for characters with blue eyes that are taller than 160 but shorter than 200?
+-   What is the average mass for blue-eyed characters that are taller than 160 but shorter than 200?
 
 -   Create a new dataframe that contains only name, height, mass, gender and species
 
