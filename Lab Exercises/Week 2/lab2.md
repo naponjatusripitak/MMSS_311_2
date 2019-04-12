@@ -116,7 +116,6 @@ You can write your codes in chunks and run them separately. Note that when you k
 ```{r}
 packages <- c("dplyr", "ggplot2", "lubridate", "stringr", "foreign")
 ```
-```
 
 You have many different options in dealing with your codes. At times, you might want to display your codes without running them. At other times, you might want to run your codes but without displaying the actual output. You will be making choices with regard to three issues:
 1. Whether or not to evaluate your codes
