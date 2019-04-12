@@ -400,10 +400,8 @@ if(a > b){
 Or use a one-liner:
 
 ``` r
-ifelse(a > b, print("True"), print("False"))
+ifelse(a > b, "True", "False")
 ```
-
-    ## [1] "True"
 
     ## [1] "True"
 
