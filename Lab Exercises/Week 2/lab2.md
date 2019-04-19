@@ -112,11 +112,11 @@ Code Chunks
 
 You can write your codes in chunks and run them separately. Note that when you knit the document, all your code chunks will be evaluated unless specified otherwise. Here's how to wrap your codes. Begin your chunk with three backticks (generally the same button as "~"") followed by "r" in braces and end your chunk with three backticks. For example,
 
-``` r
+`````` r
 ```{r}
 packages <- c("dplyr", "ggplot2", "lubridate", "stringr", "foreign")
 ```
-```
+``````
 
 You have many different options in dealing with your codes. At times, you might want to display your codes without running them. At other times, you might want to run your codes but without displaying the actual output. You will be making choices with regard to three issues:
 1. Whether or not to evaluate your codes
@@ -400,10 +400,8 @@ if(a > b){
 Or use a one-liner:
 
 ``` r
-ifelse(a > b, print("True"), print("False"))
+ifelse(a > b, "True", "False")
 ```
-
-    ## [1] "True"
 
     ## [1] "True"
 
