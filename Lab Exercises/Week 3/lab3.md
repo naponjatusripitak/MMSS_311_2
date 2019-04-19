@@ -1,9 +1,34 @@
--   [Lab Section 3](#lab-section-3)
-    -   [Pipes](#pipes)
-    -   [Classification](#classification)
 
 Lab Section 3
 =============
+-   [Dplyr](#dplyr)
+-   [Pipes](#pipes)
+-   [Regression & Classification](#regression-classification)
+
+Dplyr
+-----
+
+Provides useful functions for easy data manipulation:
+- `filter()` allows you to select specific observations
+- `arrange()` allows you to reorder your data
+- `select()` allows you to select data based on names
+- `rename()` allows you to rename variables
+- `mutate()` allows you to create new variables from current ones
+- `summarize()` condenses data values
+- `sample_n()` takes samples
+
+Here are some examples:
+
+``` r
+# Load dplyr
+library(dplyr)
+
+# Examples
+filter(mtcars, mpg < 20, cyl == 6) # filter(df, condition, condition)
+arrange(mtcars, mpg) # arrange(matcars, desc(mpg)) returns the result in a descending order
+select(mtcars, mpg, cyl) # select(df, variable1, variable2)
+mutate(mtcars, kpg = mpg*1.609) # create a new variable inside the dataframe called kpg as a function of mpg
+```
 
 Pipes
 -----
@@ -21,7 +46,7 @@ data(starwars)
 
 ``` r
 ### Without pipes
-subset_starwars = filter(starwars, eye_color == "blue", height > 160 & height < 200)
+subset_starwars <- filter(starwars, eye_color == "blue", height > 160 & height < 200)
 mean(subset_starwars$mass, na.rm=T)
 ```
 
@@ -39,18 +64,84 @@ starwars %>%
     ##   <dbl>
     ## 1  79.0
 
-Now it's your turn.
+-   Calculate the number of characters of each species that have mass greater than 60
 
--   What is the average height by species? (Hint: use `group_by()` and `summarize()`)
+``` r
+### Without pipes
+subset_starwars <- filter(starwars, mass > 60)
+group <- group_by(subset_starwars, species)
+result <- tally(group)
+result
+```
+
+    ## # A tibble: 20 x 2
+    ##    species          n
+    ##    <chr>        <int>
+    ##  1 Besalisk         1
+    ##  2 Cerean           1
+    ##  3 Droid            2
+    ##  4 Geonosian        1
+    ##  5 Gungan           2
+    ##  6 Human           20
+    ##  7 Hutt             1
+    ##  8 Kaleesh          1
+    ##  9 Kaminoan         1
+    ## 10 Kel Dor          1
+    ## 11 Mon Calamari     1
+    ## 12 Nautolan         1
+    ## 13 Neimodian        1
+    ## 14 Pau'an           1
+    ## 15 Rodian           1
+    ## 16 Sullustan        1
+    ## 17 Toong            1
+    ## 18 Trandoshan       1
+    ## 19 Wookiee          2
+    ## 20 Zabrak           1
+
+``` r
+### With pipes
+starwars %>%
+  filter(mass > 60) %>%
+  group_by(species) %>%
+  tally()
+```
+
+    ## # A tibble: 20 x 2
+    ##    species          n
+    ##    <chr>        <int>
+    ##  1 Besalisk         1
+    ##  2 Cerean           1
+    ##  3 Droid            2
+    ##  4 Geonosian        1
+    ##  5 Gungan           2
+    ##  6 Human           20
+    ##  7 Hutt             1
+    ##  8 Kaleesh          1
+    ##  9 Kaminoan         1
+    ## 10 Kel Dor          1
+    ## 11 Mon Calamari     1
+    ## 12 Nautolan         1
+    ## 13 Neimodian        1
+    ## 14 Pau'an           1
+    ## 15 Rodian           1
+    ## 16 Sullustan        1
+    ## 17 Toong            1
+    ## 18 Trandoshan       1
+    ## 19 Wookiee          2
+    ## 20 Zabrak           1
+
+Now it's your turn. Use `%>%` to complete the following steps.
+
+-   Calculate the average height by species (Hint: use `group_by()` and `summarize()`)
 
 -   Calculate the mass to height ratio for all characters and rank them from high to low. (Hint: use `mutate()` to create a new column for mass to height ratio and use `arrange()` to rank the observations)
 
 -   What is the coefficient on `height` when we regress `mass` on `height`?
 
--   Construct a dataframe from the regression model's results (Hint: use `tidy()`)
+-   Construct a dataframe from the regression model's results (Hint: use `tidy()` from the `broom` library)
 
-Classification
---------------
+Regression & Classification
+---------------------------
 
 In this exercise, we will be predicting whether a given character in the `starwars` dataset is human or non-human, using mass and height as our predictors and OLS as our model.
 
