@@ -1,0 +1,357 @@
+---
+title: "Lab Section 4: String Manipulation & Text Preprocessing in R"
+author: "Napon Jatusripitak"
+date: "4/25/2019"
+output: 
+  beamer_presentation:
+    keep_tex: true
+    template: "beamerprefs-metropolis.tex"
+    slide_level: 2
+   # highlight: zenburn
+editor_options: 
+  chunk_output_type: console
+---
+
+# String Manipulation in R
+
+![](~/Documents/GitHub/MMSS_311_2/Lab Exercises/Week 4/a-day-may-come-when-i-learn-how-regex-actuallyworks-31526332.png)
+
+![](~/Documents/GitHub/MMSS_311_2/Lab Exercises/Week 4/use-regex.jpg)
+
+
+
+
+## Regular Expression
+Regular expressions are a set of pattern matching commands that determine how string searches are performed. They combine boolean search components as well as quantifiers.  
+
+- `|` indicates `OR`
+- `( )` are used to group
+- `^` looks for a starting position
+- `$` looks for the end of the string
+- `.` searches for a single character
+- `[ ]` searches for a single character in a set
+- `?` indicates that an element may or may not exist ($\leq 1$ occurrence)
+- `*` indicates $\geq 0$ occurrences
+- `+` indicates $\geq 1$ occurrences
+- `/` indicates a delimiter (special character)
+
+## Examples: Working with Regex in R
+In `R`, you will often use regular expressions data organization and cleaning. First, you might want to familiarize yourself with `grep`, `grepl`, `sub` and `gsub` commands.
+
+## Find matches using `grep` and `grepl`
+- `grep` searches a specific pattern (case sensitive) in x where x is a character vector and returns a numeric vector that gives the position of each member of x in the pattern
+- `grepl` works in a similar manner but returns a logical vector instead
+
+\tiny
+```{r}
+# grep(pattern, x)
+text <- c("Luke Skywalker", "Yoda", "Anakin Skywalker", "Obi-wan Kenobi")
+pattern <- "Skywalker"
+grep(pattern, text)
+
+# grepl(pattern, x)
+grepl(pattern, text)
+```
+
+## Find and replace first match  
+\tiny
+```{r}
+text <- "I went to the library but the library was closed."
+pattern <- "library"
+sub(pattern, "restaurant", text) # sub(pattern, replacement, x)
+```
+## Find and replace all matches  
+\tiny
+```{r}
+text <- "I went to the library but the library was closed."
+pattern <- "library"
+gsub(pattern, "restaurant", text) # gsub(pattern, replacement, x)
+```
+
+## Now with regex operators  
+\tiny
+```{r}
+starttime <- c("1/21/2015 8:48:53", "1/23/2015 8:48:51", "1/20/2015 17:46:47")
+pattern <- "^.* |:.*$"
+gsub(pattern, "", starttime) # gsub(pattern, replacement, x)
+```
+
+## Extracting digits from a string  
+\tiny
+```{r}
+text <- "My phone number is 987-654-3210."
+pattern <- "[^0-9]" # using ^ within [] excludes whatever is inside the brackets
+gsub(pattern, "", text) # gsub(pattern, replacement, x)
+```
+
+## Removing special characters  
+\tiny
+```{r}
+text <- "Zheng He (Chinese: 鄭和; 1371 – 1433 or 1435) was a Chinese mariner, explorer, diplomat, fleet admiral, and court eunuch during China's early Ming dynasty."
+
+pattern <- "\\(.*\\)"
+gsub(pattern, "", text) # gsub(pattern, replacement, x)
+```
+
+## Removing urls  
+\tiny
+```{r}
+text <- "Thank you @StanleyPJohnson for bringing #wildlife + #biodiversity loss into 
+@BBCNewsnight debate on #environment https://t.co/r0PKh7lYX1"
+
+pattern <- "http.*"
+gsub(pattern, "", text) # gsub(pattern, replacement, x)
+```
+
+I would strongly urge you to:  
+1. Learn different commands for string manipulation in `R` (base r + stringr)  
+2. Familiarize yourself with Regex
+
+## Additional Resources
+Here are some online resources that might be helpful for you.  
+- [Christina Maimone's GitHub   Repository](https://github.com/cmaimone/text-coding-group/tree/master/regex)  
+- [Cheat sheet](https://github.com/rstudio/cheatsheets/raw/master/strings.pdf)  
+- [Quick tutorial](https://regexone.com/)  
+
+# Text Preprocessing
+## Preprocessing with `tm`
+[Documentation](https://cran.r-project.org/web/packages/tm/vignettes/tm.pdf)
+Import the data as a corpus  
+\tiny
+```{r}
+library(tm)
+sources <- file.path("~/Documents/GitHub/MMSS_311_2/Lab Exercises/Week 4/treaties")
+names <- list.files("~/Documents/GitHub/MMSS_311_2/Lab Exercises/Week 4/treaties")
+
+docs<-VCorpus(DirSource(sources), readerControl=list(language="fre"))
+summary(docs)
+```
+
+## Using `tm_map()`  
+
+\tiny
+```{r}
+docs<-VCorpus(DirSource(sources), readerControl=list(language="fre"))
+summary(docs)
+#writing over the corpus with a version without punctuation
+docs <- tm_map(docs, removePunctuation)
+#remove numbers
+docs <- tm_map(docs, removeNumbers)
+#make lowercase
+docs <- tm_map(docs, tolower)
+#removing stopwords
+docs <- tm_map(docs, removeWords, stopwords("french"))
+#stem the documents
+docs <- tm_map(docs, stemDocument)
+#remove whitespace
+docs <- tm_map(docs, stripWhitespace)
+#make sure it's still plain text
+docs <- tm_map(docs, PlainTextDocument)
+```
+
+
+## Creating Document-Term Matrix
+
+\tiny
+```{r}
+#creating a document-term matrix, which contains the frequency of each word in the corpus
+docsTDM <- DocumentTermMatrix(docs)
+
+docsTDM.mat <- as.matrix(docsTDM)
+rownames(docsTDM.mat) <- names
+#print the matrix to the console
+docsTDM.mat
+```
+
+## Word Frequency
+
+\tiny
+```{r}
+# word frequencies
+freq <- colSums(docsTDM.mat)
+ord <- order(freq)
+freq[head(ord)]
+freq[tail(ord)]
+
+freq2 <- sort(colSums(docsTDM.mat), decreasing=TRUE)
+head(freq2, 20)
+
+# or use a built-in function
+findFreqTerms(docsTDM, 10)
+```
+
+## Visualizing Word Frequency
+
+```{r, echo=F, warning=F, message=F}
+library(ggplot2)
+wf <- data.frame(word=names(freq), freq=freq2)
+p <- ggplot(subset(wf, freq>50), aes(word, freq))    
+p <- p + geom_bar(stat="identity")   
+p <- p + theme(axis.text.x=element_text(angle=45, hjust=1))   
+p
+```
+
+## Remove Sparse Terms
+
+```{r}
+trms <- removeSparseTerms(docsTDM,.1)
+```
+
+# Text analysis with `tidy`
+
+Using data from faculty [profiles](https://www.polisci.northwestern.edu/people/core-faculty/)
+
+```{r, warning = F, message = F, include=F}
+library(dplyr)
+library(rvest)
+url <- 'https://www.polisci.northwestern.edu/people/core-faculty/'
+faculty_page <- read_html(url)
+```
+
+```{r, include=F}
+# Get names
+fac_names <- faculty_page %>% 
+  html_nodes('h3 a') %>% 
+  html_text()
+head(fac_names)
+```
+
+```{r, include=F}
+# Get links - the 'href' attribute had the urls
+fac_links <- faculty_page %>% 
+  html_nodes('h3 a') %>% 
+  html_attr('href')
+head(fac_links)
+```
+
+
+```{r, include=F}
+dat <- data.frame(
+  fac_names, fac_links,
+  stringsAsFactors = F) %>%
+  mutate(fac_links = paste0(url, fac_links))
+
+head(dat)
+```
+
+```{r, include=F}
+for(i in 1:nrow(dat)){
+  dat$text[i] <- dat$fac_links[i] %>%
+  read_html() %>%
+  html_nodes('p') %>%
+  html_text() %>%
+  paste(collapse = '\n\n')
+}
+
+head(substring(dat$text, 500, 550))
+```
+
+## Text analysis with `tidy`
+
+\footnotesize
+Tidying will arrange the text into one row per word to make analysis easier.
+
+\tiny
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(tm) # for stripping whitespace
+library(tidytext)
+
+tidy_dat <- dat %>%
+  mutate(text = stripWhitespace(text)) %>%
+  unnest_tokens(word, text)
+
+tidy_dat %>% select(fac_names, word) %>% .[1000:1010, ]
+```
+
+## Describing the data
+
+\footnotesize
+Now you can get some basic statistics:
+\tiny
+```{r}
+tidy_dat %>% 
+  group_by(fac_names) %>%
+  count() %>%
+  arrange(-n)
+```
+
+## Describing the data
+\tiny
+```{r}
+tidy_dat %>%
+  group_by(word) %>%
+  count() %>%
+  arrange(-n)
+```
+
+## Preprocessing with `tidy`
+Example: removing stopwords
+```{r, warning=F, message=F}
+library(gutenbergr)
+
+hgwells <- gutenberg_download(c(35, 36, 5230, 159))
+
+tidy_hgwells <- hgwells %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words)
+
+# note that you can also use filter() 
+# for a smaller set of stopwords
+```
+
+## Tidy Word Freq
+
+\tiny
+```{r}
+tidy_hgwells %>%
+  count(word, sort = TRUE)
+```
+
+## TF-IDF
+
+tf-idf refers to term frequency–inverse document frequency. It is a numeric measure that evaluates the importance of a given word in a given document based on how often the word appears in that document and a collection of document.
+
+TF-IDF score for term i in document j
+\[tfidf(i, j ) = tf(i, j) \times idf(i)\]
+
+\[tf(i , j) = \dfrac{\text{Term i frequency in document j}}{\text{Total words in document j}}\]
+\[idf(i) = log(\frac{{\text{Total documents}}}{{\text{docs containing term i}}})\]
+
+
+## Tidy TF-IDF
+\tiny
+```{r, warning=F, message=F}
+
+book_words <- hgwells %>%
+ unnest_tokens(word, text) %>%
+ anti_join(stop_words) %>%
+ count(gutenberg_id, word, sort = TRUE) %>%
+ ungroup()
+
+total_words <- book_words %>% 
+ group_by(gutenberg_id) %>%
+ summarize(total = sum(n))
+
+book_words <- left_join(book_words, total_words)
+
+book_words
+
+```
+
+## Tidy TF-IDF
+
+\tiny
+```{r}
+book_words <- book_words %>%
+  bind_tf_idf(word, gutenberg_id, n)
+book_words
+```
+
+## A Caveat
+
+Note that until now, we've been using unigrams as our unit of analysis. You can also change the _ngram_.
+
+```{r, eval=F}
+bigram.docs <- all.docs %>% 
+unnest_tokens(ngram, text, token = "ngrams", n = 2)
